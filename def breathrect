@@ -1,0 +1,40 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+# [IMPORTS] #
+
+import pygame
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+class Tile(pygame.sprite.Sprite):
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [OBJECTS] #
+    
+    def __init__(self, pos_width, pos_height, width, heigth, color, breath):
+        super().__init__()
+
+        self.rect = pygame.Rect(pos_width, pos_height, width, heigth)
+        self.color = color
+        self.breath = breath
+        self.breathing = True
+
+    def breathrect(self, surface):
+
+        pygame.draw.rect(surface, (0, 0, 0), self.rect)
+
+        if self.breathing:
+            self.breath += 1
+            self.rect.width += 1
+            self.rect.height += 1
+            pygame.draw.rect(surface, self.color, self.rect)
+            if self.breath == 30:
+                self.breathing = False
+        else:
+            self.breath -= 1
+            self.rect.width -= 1
+            self.rect.height -= 1
+            pygame.draw.rect(surface, self.color, self.rect)
+            if self.breath == 1:
+                self.breathing = True
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
