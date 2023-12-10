@@ -14,10 +14,13 @@ class Tile(pygame.sprite.Sprite):
 
         self.rect = pygame.Rect(pos_width, pos_height, width, height)
         self.rect2 = pygame.Rect(pos_width + 100, pos_height + 100, width, height)
+        self.rect3 = pygame.Rect(pos_width, pos_height, width + 5, height + 5)
         self.color = color 
-        self.breath = breath
+        self.breath = breath 
         self.breathing = True 
         self.direction = 'stop'
+        self.rect.center = (pos_width, pos_height)
+        self.rect3.center = (pos_width, pos_height)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
@@ -31,40 +34,48 @@ class Tile(pygame.sprite.Sprite):
             self.rect.width += 1
             self.rect.height += 1
             pygame.draw.rect(surface, self.color, self.rect)
+            pygame.draw.rect(surface, (255, 255, 255), self.rect3)
             if self.breath == 30:
                 self.breathing = False 
-        else: 
+        else:
             self.breath -= 1
             self.rect.width -= 1
             self.rect.height -= 1
             pygame.draw.rect(surface, self.color, self.rect)
+            pygame.draw.rect(surface, (255, 255, 255), self.rect3)
             if self.breath == 0:
-                self.breathing = True 
+                self.breathing = True
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
 
     def moverect(self, surface):
-
+     
         pygame.draw.rect(surface, (0, 0, 0), self.rect)
+        pygame.draw.rect(surface, (0, 0, 0), self.rect3)
 
         key = pygame.key.get_pressed()
 
         if key[pygame.K_d]:
             self.rect.x += 1
+            self.rect3.x += 1
             self.direction = 'right'
         elif key[pygame.K_a]:
             self.rect.x -= 1
+            self.rect3.x -= 1
             self.direction = 'left'
         elif key[pygame.K_s]:
-            self.rect.y += 1
+            self.rect.y += 1 
+            self.rect3.y += 1
             self.direction = 'down'
         elif key[pygame.K_w]:
             self.rect.y -= 1
+            self.rect3.y -= 1
             self.direction = 'up'
         else:
             self.direction = 'stop'
 
+        pygame.draw.rect(surface, (255, 255, 255), self.rect3)
         pygame.draw.rect(surface, self.color, self.rect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -74,15 +85,15 @@ class Tile(pygame.sprite.Sprite):
 
         pygame.draw.rect(surface, (0, 0, 0), self.rect2)
 
-        if self.rect.colliderect(self.rect2):
+        if self.rect.colliderect(self.rect2) or self.rect3.colliderect(self.rect2):
             if self.direction == 'right':
                 self.rect2.x += 1
             elif self.direction == 'left':
                 self.rect2.x -= 1
-            elif self.direction == 'up':
-                self.rect2.y -= 1
             elif self.direction == 'down':
                 self.rect2.y += 1
+            elif self.direction == 'up':
+                self.rect2.y -= 1
 
         pygame.draw.rect(surface, self.color, self.rect2)
 
