@@ -1,0 +1,20 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 003] #
+
+    def colliderect(self, surface):
+
+        pygame.draw.rect(surface, (0, 0, 0), self.rect2)
+
+        if self.rect.colliderect(self.rect2):
+            if self.direction == 'right':
+                self.rect2.x += 1
+            elif self.direction == 'left':
+                self.rect2.x -= 1
+            elif self.direction == 'up':
+                self.rect2.y -= 1
+            elif self.direction == 'down':
+                self.rect2.y += 1
+
+        pygame.draw.rect(surface, self.color, self.rect2)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
