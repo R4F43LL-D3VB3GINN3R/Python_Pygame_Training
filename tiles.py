@@ -21,6 +21,7 @@ class Tile(pygame.sprite.Sprite):
         self.direction = 'stop'
         self.rect.center = (pos_width, pos_height)
         self.rect3.center = (pos_width, pos_height)
+        
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
