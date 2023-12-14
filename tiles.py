@@ -8,102 +8,91 @@ import pygame
 class Tile(pygame.sprite.Sprite):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [OBJECTS] #
-    
-    def __init__(self, pos_width, pos_height, width, height, color, breath):
+
+    def __init__(self, pos_width, pos_height, width, height, color, breath, surface):
         super().__init__()
 
         self.rect = pygame.Rect(pos_width, pos_height, width, height)
-        self.rect2 = pygame.Rect(pos_width + 100, pos_height + 100, width, height)
-        self.rect3 = pygame.Rect(pos_width, pos_height, width + 5, height + 5)
+        self.rect2 = pygame.Rect(pos_width + 50, pos_height + 50, width, height)
         self.color = color 
-        self.breath = breath 
+        self.breath = breath
         self.breathing = True 
-        self.direction = 'stop'
-        self.rect.center = (pos_width, pos_height)
-        self.rect3.center = (pos_width, pos_height)
-        
+        self.position = 'stop'
+        self.display = surface
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
 
-    def breathrect(self, surface):
+    def breathrect(self):
 
-        pygame.draw.rect(surface, (0, 0, 0), self.rect)
+        pygame.draw.rect(self.display, (0, 0, 0), self.rect)
 
         if self.breathing:
             self.breath += 1
             self.rect.width += 1
             self.rect.height += 1
-            pygame.draw.rect(surface, self.color, self.rect)
-            pygame.draw.rect(surface, (255, 255, 255), self.rect3)
             if self.breath == 30:
                 self.breathing = False 
-        else:
+        else: 
             self.breath -= 1
             self.rect.width -= 1
             self.rect.height -= 1
-            pygame.draw.rect(surface, self.color, self.rect)
-            pygame.draw.rect(surface, (255, 255, 255), self.rect3)
             if self.breath == 0:
-                self.breathing = True
+                self.breathing = True 
+
+        pygame.draw.rect(self.display, self.color, self.rect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
 
-    def moverect(self, surface):
-     
-        pygame.draw.rect(surface, (0, 0, 0), self.rect)
-        pygame.draw.rect(surface, (0, 0, 0), self.rect3)
+    def moverect(self):
 
-        key = pygame.key.get_pressed()
+        pygame.draw.rect(self.display, (0, 0, 0), self.rect)
 
-        if key[pygame.K_d]:
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_d]:
             self.rect.x += 1
-            self.rect3.x += 1
-            self.direction = 'right'
-        elif key[pygame.K_a]:
+            self.position = 'right'
+        elif keys[pygame.K_a]:
             self.rect.x -= 1
-            self.rect3.x -= 1
-            self.direction = 'left'
-        elif key[pygame.K_s]:
-            self.rect.y += 1 
-            self.rect3.y += 1
-            self.direction = 'down'
-        elif key[pygame.K_w]:
+            self.position = 'left'
+        elif keys[pygame.K_s]:
+            self.rect.y += 1
+            self.position = 'down'
+        elif keys[pygame.K_w]:
             self.rect.y -= 1
-            self.rect3.y -= 1
-            self.direction = 'up'
-        else:
-            self.direction = 'stop'
+            self.position = 'up'
+        else: 
+            self.position = 'stop'
 
-        pygame.draw.rect(surface, (255, 255, 255), self.rect3)
-        pygame.draw.rect(surface, self.color, self.rect)
+        pygame.draw.rect(self.display, self.color, self.rect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 003] #
 
-    def colliderect(self, surface):
+    def colliderect(self):
 
-        pygame.draw.rect(surface, (0, 0, 0), self.rect2)
+        pygame.draw.rect(self.display, (0, 0, 0), self.rect2)
 
-        if self.rect.colliderect(self.rect2) or self.rect3.colliderect(self.rect2):
-            if self.direction == 'right':
+        if self.rect.colliderect(self.rect2):
+            if self.position == 'right':
                 self.rect2.x += 1
-            elif self.direction == 'left':
+            elif self.position == 'left':
                 self.rect2.x -= 1
-            elif self.direction == 'down':
+            elif self.position == 'down':
                 self.rect2.y += 1
-            elif self.direction == 'up':
+            elif self.position == 'up':
                 self.rect2.y -= 1
 
-        pygame.draw.rect(surface, self.color, self.rect2)
+        pygame.draw.rect(self.display, self.color, self.rect2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# [METHOD: 004] #
+# [METHOD: 005] #
 
-    def run(self, surface):
+    def update(self):
 
-        self.moverect(surface)
-        self.colliderect(surface)
+        self.moverect()
+        self.colliderect()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
