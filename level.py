@@ -10,16 +10,13 @@ class Level(pygame.sprite.Sprite):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [OBJECTS] #
     
-    def __init__(self, surface):
+    def __init__(self, surface, layout):
         super().__init__()
 
         self.display = surface
-        self.myrect = Tile(600, 400, 50, 50, (0, 0, 255), 0, self.display)
-        self.map = stage_001 * tile_size 
-        self.surface = surface 
-        self.rect_size = tile_size 
-
-
+        self.myrect = Tile(600, 400, tile_size, tile_size, (0, 0, 255), 0, self.display)
+        self.map = layout
+ 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
 
@@ -27,11 +24,11 @@ class Level(pygame.sprite.Sprite):
 
         for row_index, row in enumerate(self.map):
             for col_index, cell in enumerate(row):
-                x = col_index * self.rect_size
-                y = row_index * self.rect_size
+                x = col_index * tile_size
+                y = row_index * tile_size
 
                 if cell == 'X':
-                    pygame.draw.rect(self.surface, (0, 0, 255), pygame.Rect(x, y, 50, 50))
+                    pygame.draw.rect(self.display, (0, 0, 255), pygame.Rect(x, y, tile_size, tile_size))
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
