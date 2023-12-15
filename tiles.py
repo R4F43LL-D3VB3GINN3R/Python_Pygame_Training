@@ -1,22 +1,27 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
 # [IMPORTS] #
 
-import pygame
+import pygame 
+import random
+from settings import *
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class Tile(pygame.sprite.Sprite):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [OBJECTS] #
 
-    def __init__(self, pos_width, pos_height, width, height, color, breath, surface):
+    def __init__(self, x, y, color, breath, surface):
         super().__init__()
 
-        self.rect = pygame.Rect(pos_width, pos_height, width, height)
-        self.rect2 = pygame.Rect(pos_width + 50, pos_height + 50, width, height)
+        self.myrect = pygame.Rect(x, y, tile_size, tile_size)
+        self.myrect2 = pygame.Rect(x + 50, y + 50, tile_size, tile_size)
+        self.random_width = random.randint(0, screen_width)
+        self.myrect3 = pygame.Rect(self.random_width, y, tile_size, tile_size)
         self.color = color 
-        self.breath = breath
+        self.breath = breath 
         self.breathing = True 
-        self.position = 'stop'
+        self.pos = 'stop'
         self.display = surface
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -24,74 +29,91 @@ class Tile(pygame.sprite.Sprite):
 
     def breathrect(self):
 
-        pygame.draw.rect(self.display, (0, 0, 0), self.rect)
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect)
 
         if self.breathing:
             self.breath += 1
-            self.rect.width += 1
-            self.rect.height += 1
+            self.myrect.width += 1
+            self.myrect.height += 1
             if self.breath == 30:
                 self.breathing = False 
         else: 
             self.breath -= 1
-            self.rect.width -= 1
-            self.rect.height -= 1
+            self.myrect.width -= 1
+            self.myrect.height -= 1
             if self.breath == 0:
-                self.breathing = True 
+                self.breathing = True
 
-        pygame.draw.rect(self.display, self.color, self.rect)
+        pygame.draw.rect(self.display, self.color, self.myrect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
 
     def moverect(self):
 
-        pygame.draw.rect(self.display, (0, 0, 0), self.rect)
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect)
 
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_d]:
-            self.rect.x += 1
-            self.position = 'right'
+            self.myrect.x += 1
+            self.pos = 'right'
         elif keys[pygame.K_a]:
-            self.rect.x -= 1
-            self.position = 'left'
+            self.myrect.x -= 1
+            self.pos = 'left'
         elif keys[pygame.K_s]:
-            self.rect.y += 1
-            self.position = 'down'
+            self.myrect.y += 1
+            self.pos = 'down'
         elif keys[pygame.K_w]:
-            self.rect.y -= 1
-            self.position = 'up'
-        else: 
-            self.position = 'stop'
+            self.myrect.y -= 1
+            self.pos = 'up'
+        else:
+            self.pos = 'stop'
 
-        pygame.draw.rect(self.display, self.color, self.rect)
+        pygame.draw.rect(self.display, self.color, self.myrect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 003] #
 
     def colliderect(self):
 
-        pygame.draw.rect(self.display, (0, 0, 0), self.rect2)
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect2)
 
-        if self.rect.colliderect(self.rect2):
-            if self.position == 'right':
-                self.rect2.x += 1
-            elif self.position == 'left':
-                self.rect2.x -= 1
-            elif self.position == 'down':
-                self.rect2.y += 1
-            elif self.position == 'up':
-                self.rect2.y -= 1
+        if self.myrect.colliderect(self.myrect2):
+            if self.pos == 'right':
+                self.myrect2.x += 1
+            elif self.pos == 'left':
+                self.myrect2.x -= 1
+            elif self.pos == 'down':
+                self.myrect2.y += 1
+            elif self.pos == 'up':
+                self.myrect2.y -= 1
 
-        pygame.draw.rect(self.display, self.color, self.rect2)
+        pygame.draw.rect(self.display, self.color, self.myrect2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 004] #
 
+    def rainingrects(self):
+
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect3)
+
+        self.myrect3.y += 10
+
+        if self.myrect3.y > 700:
+            self.myrect3.y = 0
+            self.random_width = random.randint(0, screen_width)
+            self.myrect3.x = self.random_width 
+
+        pygame.draw.rect(self.display, self.color, self.myrect3)
+
+        print(self.myrect3.x)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 005] #
+
     def update(self):
 
-        self.moverect()
-        self.colliderect()
+        self.rainingrects()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
