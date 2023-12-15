@@ -5,10 +5,10 @@
 
         for row_index, row in enumerate(self.map):
             for col_index, cell in enumerate(row):
-                x = col_index * self.rect_size
-                y = row_index * self.rect_size
+                x = col_index * tile_size
+                y = row_index * tile_size
 
                 if cell == 'X':
-                    pygame.draw.rect(self.surface, (0, 0, 255), pygame.Rect(x, y, 50, 50))
+                    pygame.draw.rect(self.display, (0, 0, 255), pygame.Rect(x, y, tile_size, tile_size))
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
