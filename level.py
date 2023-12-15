@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [IMPORTS] #
 
-import pygame
-from tiles import Tile
+import pygame 
+from tiles import Tile 
 from settings import *
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -13,14 +13,13 @@ class Level(pygame.sprite.Sprite):
     def __init__(self, surface, layout):
         super().__init__()
 
-        self.display = surface
-        self.myrect = Tile(600, 400, tile_size, tile_size, (0, 0, 255), 0, self.display)
+        self.tiles = Tile(300, 300, (255, 255, 255), 0, surface)
         self.map = layout
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
-
-    def printrect(self):
+                                                                        
+    def printmap(self):
 
         for row_index, row in enumerate(self.map):
             for col_index, cell in enumerate(row):
@@ -28,14 +27,14 @@ class Level(pygame.sprite.Sprite):
                 y = row_index * tile_size
 
                 if cell == 'X':
-                    pygame.draw.rect(self.display, (0, 0, 255), pygame.Rect(x, y, tile_size, tile_size))
+                    pygame.draw.rect(self.tiles.display, self.tiles.color, pygame.Rect(x, y, tile_size, tile_size))
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
 
     def run(self):
 
-        self.myrect.update()
-        self.printrect()
+        self.tiles.update()
+        self.printmap()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
