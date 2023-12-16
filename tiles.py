@@ -14,9 +14,11 @@ class Tile(pygame.sprite.Sprite):
         super().__init__()
 
         self.random_width = random.randint(0, screen_width)
+        self.random_height = random.randint(0, screen_height)
         self.myrect = pygame.Rect(x, y, tile_size, tile_size)
         self.myrect2 = pygame.Rect(0, 0, tile_size, tile_size)
         self.myrect3 = pygame.Rect(self.random_width, y, tile_size, tile_size)
+        self.myrect4 = pygame.Rect(x, self.random_height, tile_size, tile_size)
         self.color = color 
         self.breath = breath 
         self.breathing = True 
@@ -109,8 +111,28 @@ class Tile(pygame.sprite.Sprite):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 005] #
 
+    def blastrects(self):
+
+        pygame.draw.rect(self.display, (0, 0, 0,), self.myrect4)
+
+        self.myrect4.x += 10
+
+        print(self.myrect4.x)
+
+        if self.myrect4.x > 600:
+            print(self.myrect4.x)
+            self.myrect4.x = 0
+            self.random_height = random.randint(0, screen_height)
+            self.myrect4.y = self.random_height
+
+        pygame.draw.rect(self.display, self.color, self.myrect4)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 06] #
+
     def update(self):
 
         self.moverect()
+        self.blastrects()
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
