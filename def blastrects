@@ -1,0 +1,20 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 005] #
+
+    def blastrects(self):
+
+        pygame.draw.rect(self.display, (0, 0, 0,), self.myrect4)
+
+        self.myrect4.x += 10
+
+        print(self.myrect4.x)
+
+        if self.myrect4.x > 600:
+            print(self.myrect4.x)
+            self.myrect4.x = 0
+            self.random_height = random.randint(0, screen_height)
+            self.myrect4.y = self.random_height
+
+        pygame.draw.rect(self.display, self.color, self.myrect4)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
