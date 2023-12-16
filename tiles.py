@@ -13,9 +13,9 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self, x, y, color, breath, surface):
         super().__init__()
 
-        self.myrect = pygame.Rect(x, y, tile_size, tile_size)
-        self.myrect2 = pygame.Rect(x + 50, y + 50, tile_size, tile_size)
         self.random_width = random.randint(0, screen_width)
+        self.myrect = pygame.Rect(x, y, tile_size, tile_size)
+        self.myrect2 = pygame.Rect(0, 0, tile_size, tile_size)
         self.myrect3 = pygame.Rect(self.random_width, y, tile_size, tile_size)
         self.color = color 
         self.breath = breath 
@@ -113,6 +113,6 @@ class Tile(pygame.sprite.Sprite):
 
     def update(self):
 
-        self.rainingrects()
-
+        self.moverect()
+    
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
