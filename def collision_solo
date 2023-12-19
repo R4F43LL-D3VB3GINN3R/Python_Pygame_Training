@@ -19,7 +19,18 @@
                     self.tiles.myrect.y -= 1
                 elif self.tiles.pos == 'up':
                     self.tiles.myrect.y += 1
-
+                elif self.tiles.pos == 'stop':
+                    self.gravity_force = 0
+                    self.tiles.jumping = True
+                    self.tiles.myrect.y -= 1
+                elif self.tiles.pos == 'falling':
+                    self.gravity_force = 0
+                    self.tiles.myrect.y -= 1
+                    self.tiles.myrect.bottom -= 2
+                    self.tiles.direction.y = 0
+                    self.tiles.jumping = True
+                    self.tiles.pos = 'stop'
+                
             pygame.draw.rect(self.tiles.display, (0, 0, 0), solo)
             pygame.draw.rect(self.tiles.display, (255, 0, 0), solo, 2)
 
