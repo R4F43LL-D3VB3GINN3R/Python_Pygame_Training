@@ -19,11 +19,16 @@ class Tile(pygame.sprite.Sprite):
         self.myrect2 = pygame.Rect(0, 0, tile_size, tile_size)
         self.myrect3 = pygame.Rect(self.random_width, y, tile_size, tile_size)
         self.myrect4 = pygame.Rect(x, self.random_height, tile_size, tile_size)
+        self.direction = pygame.math.Vector2(0,0)
+        self.direction.y = -1
         self.color = color 
         self.breath = breath 
         self.breathing = True 
-        self.pos = 'stop'
+        self.pos = 'falling'
         self.display = surface
+        self.jump_force = 30
+        self.jumping = True
+        self.speed = 5
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
@@ -57,24 +62,40 @@ class Tile(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_d]:
-            self.myrect.x += 1
+            self.myrect.x += self.speed
+            self.direction.x = 1
             self.pos = 'right'
         elif keys[pygame.K_a]:
-            self.myrect.x -= 1
+            self.myrect.x -= self.speed
+            self.direction.x = -1
             self.pos = 'left'
-        elif keys[pygame.K_s]:
-            self.myrect.y += 1
+
+        if keys[pygame.K_s]:
             self.pos = 'down'
-        elif keys[pygame.K_w]:
-            self.myrect.y -= 1
-            self.pos = 'up'
-        else:
-            self.pos = 'stop'
 
         pygame.draw.rect(self.display, self.color, self.myrect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 003] #
+
+    def jump_rect(self):
+
+        keys = pygame.key.get_pressed()
+
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect)
+
+        if keys[pygame.K_w] and self.jumping == True:
+            self.myrect.y -= self.jump_force
+            self.direction.y = -1
+            self.pos = 'up'
+        if not keys[pygame.K_w] and self.direction.y == -1:
+            self.pos = 'falling'
+            self.jumping == False
+    
+        pygame.draw.rect(self.display, self.color, self.myrect)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 004] #
 
     def colliderect(self):
 
@@ -93,7 +114,7 @@ class Tile(pygame.sprite.Sprite):
         pygame.draw.rect(self.display, self.color, self.myrect2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# [METHOD: 004] #
+# [METHOD: 005] #
 
     def rainingrects(self):
 
@@ -109,7 +130,7 @@ class Tile(pygame.sprite.Sprite):
         pygame.draw.rect(self.display, self.color, self.myrect3)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# [METHOD: 005] #
+# [METHOD: 006] #
 
     def blastrects(self):
 
@@ -128,11 +149,12 @@ class Tile(pygame.sprite.Sprite):
         pygame.draw.rect(self.display, self.color, self.myrect4)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-# [METHOD: 06] #
+
+# [METHOD: 007] #
 
     def update(self):
 
         self.moverect()
-        self.blastrects()
+        self.jump_rect()
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
