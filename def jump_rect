@@ -1,0 +1,20 @@
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 003] #
+
+    def jump_rect(self):
+
+        keys = pygame.key.get_pressed()
+
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect)
+
+        if keys[pygame.K_w] and self.jumping == True:
+            self.myrect.y -= self.jump_force
+            self.direction.y = -1
+            self.pos = 'up'
+        if not keys[pygame.K_w] and self.direction.y == -1:
+            self.pos = 'falling'
+            self.jumping == False
+    
+        pygame.draw.rect(self.display, self.color, self.myrect)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
