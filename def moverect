@@ -1,28 +1,24 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 002] #
 
-    def moverect(self, surface):
+    def moverect(self):
 
-        pygame.draw.rect(surface, (0, 0, 0), self.rect2)
-        pygame.draw.rect(surface, (0, 0, 0), self.rect3)
+        pygame.draw.rect(self.display, (0, 0, 0), self.myrect)
 
-        key = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
 
-        if key[pygame.K_d]:
-            self.direction = 'right'
-            self.rect2.x += 1
-        elif key[pygame.K_a]:
-            self.direction = 'left'
-            self.rect2.x -= 1
-        elif key[pygame.K_s]:
-            self.direction = 'down'
-            self.rect2.y += 1
-        elif key[pygame.K_w]:
-            self.direction = 'up'
-            self.rect2.y -= 1
-        else:
-            self.direction = 'stop'
+        if keys[pygame.K_d]:
+            self.myrect.x += self.speed
+            self.direction.x = 1
+            self.pos = 'right'
+        elif keys[pygame.K_a]:
+            self.myrect.x -= self.speed
+            self.direction.x = -1
+            self.pos = 'left'
 
-        pygame.draw.rect(surface, self.color, self.rect2)
+        if keys[pygame.K_s]:
+            self.pos = 'down'
+
+        pygame.draw.rect(self.display, self.color, self.myrect)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
