@@ -17,6 +17,7 @@ class Level(pygame.sprite.Sprite):
         self.myrect4 = pygame.Rect(350, 550, tile_size, tile_size)
         self.map = layout
         self.list_tiles_solo = []
+        self.gravity_force = 5
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 001] #
@@ -54,7 +55,18 @@ class Level(pygame.sprite.Sprite):
                     self.tiles.myrect.y -= 1
                 elif self.tiles.pos == 'up':
                     self.tiles.myrect.y += 1
-
+                elif self.tiles.pos == 'stop':
+                    self.gravity_force = 0
+                    self.tiles.jumping = True
+                    self.tiles.myrect.y -= 1
+                elif self.tiles.pos == 'falling':
+                    self.gravity_force = 0
+                    self.tiles.myrect.y -= 1
+                    self.tiles.myrect.bottom -= 2
+                    self.tiles.direction.y = 0
+                    self.tiles.jumping = True
+                    self.tiles.pos = 'stop'
+                
             pygame.draw.rect(self.tiles.display, (0, 0, 0), solo)
             pygame.draw.rect(self.tiles.display, (255, 0, 0), solo, 2)
 
@@ -62,11 +74,25 @@ class Level(pygame.sprite.Sprite):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 # [METHOD: 003] #
+        
+    def gravity(self):
+
+        pygame.draw.rect(self.tiles.display, (0, 0, 0), self.tiles.myrect)
+    
+        if self.tiles.pos == 'falling' and self.tiles.direction.y == -1:
+            self.gravity_force = 20
+            self.tiles.myrect.y += self.gravity_force
+
+        pygame.draw.rect(self.tiles.display, self.tiles.color, self.tiles.myrect)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# [METHOD: 004] #
 
     def run(self):
 
         self.tiles.update()
         self.printmap()
         self.collision_solo()
+        self.gravity()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
